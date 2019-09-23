@@ -17,4 +17,8 @@ allprojects {
 }
 ```
 
+### 效果Image
+
+![image](https://github.com/kaisengao/KsgLikeView/blob/master/images/45409B7666542572C7EF027817D2F2F4.jpg)
+
 
