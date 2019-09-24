@@ -21,6 +21,10 @@ import android.widget.RelativeLayout;
 public class KsgPathAnimator extends BasePathAnimator {
 
     /**
+     * 进入、曲线动画时长
+     */
+    private int mEnterDuration, mCurveDuration;
+    /**
      * pic 宽 高
      */
     private int mPicWidth, mPicHeight;
@@ -40,9 +44,13 @@ public class KsgPathAnimator extends BasePathAnimator {
      */
     private SparseArray<CurveEvaluator> mPathArray;
 
-    KsgPathAnimator() {
+    KsgPathAnimator(int enterDuration, int curveDuration) {
 
         this.mPathArray = new SparseArray<>();
+
+        this.mEnterDuration = enterDuration;
+
+        this.mCurveDuration = curveDuration;
     }
 
     void setPic(int picWidth, int picHeight) {
@@ -61,6 +69,7 @@ public class KsgPathAnimator extends BasePathAnimator {
 
     @Override
     public void start(View child, ViewGroup parent, RelativeLayout.LayoutParams layoutParams) {
+
         parent.addView(child, layoutParams);
 
         CurveEvaluator evaluator;
@@ -81,7 +90,7 @@ public class KsgPathAnimator extends BasePathAnimator {
         // 设置路径动画
         ValueAnimator curveAnimator = generateCurveAnimation(evaluator, child);
 
-        // 设置动画集合, 同时执行进入动画,贝塞尔曲线动画
+        // 执行动画集合
         AnimatorSet animatorSet = new AnimatorSet();
 
         animatorSet.playTogether(enterAnimator, curveAnimator);
@@ -90,7 +99,7 @@ public class KsgPathAnimator extends BasePathAnimator {
     }
 
     /**
-     * 生成进入动画
+     * 进入动画
      *
      * @return 动画集合
      */
@@ -100,16 +109,16 @@ public class KsgPathAnimator extends BasePathAnimator {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(target, View.ALPHA, 0.2f, 1f);
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, View.SCALE_X, 0.2f, 1f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, View.SCALE_Y, 0.2f, 1f);
-
+        // 加一些动画差值器
         enterAnimation.setInterpolator(new LinearInterpolator());
         enterAnimation.playTogether(alpha, scaleX, scaleY);
-        enterAnimation.setDuration(1500);
+        enterAnimation.setDuration(mEnterDuration);
 
         return enterAnimation;
     }
 
     /**
-     * 生成曲线运动动画
+     * 贝赛尔曲线动画
      *
      * @return 动画集合
      */
@@ -117,13 +126,15 @@ public class KsgPathAnimator extends BasePathAnimator {
         // 贝塞尔曲线动画
         PointF pointF1 = new PointF((float) (mViewWidth - mPicWidth) / 2, mViewHeight - mPicHeight);
 
-        PointF pointF2 = new PointF((float) (mViewWidth) / 2 + (mRandom.nextBoolean() ? 1 : -1) * mRandom.nextInt(100), 0);
+        float endX = (float) ((mViewWidth - mPicWidth) / 2) + ((mRandom.nextBoolean() ? 1 : -1) * mRandom.nextInt(100));
+
+        PointF pointF2 = new PointF(endX, 0);
 
         ValueAnimator curveAnimator = ValueAnimator.ofObject(evaluator, pointF1, pointF2);
 
         curveAnimator.addUpdateListener(new CurveUpdateLister(target));
         curveAnimator.setInterpolator(new LinearInterpolator());
-        curveAnimator.setDuration(4500);
+        curveAnimator.setDuration(mCurveDuration);
 
         return curveAnimator;
     }

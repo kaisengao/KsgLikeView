@@ -33,12 +33,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
+
         mLikeView = findViewById(R.id.live_view);
 
         findViewById(R.id.live_view_single).setOnClickListener(this);
 
         mMore = findViewById(R.id.live_view_more);
         mMore.setOnClickListener(this);
+
+        mLikeView.addLikeImage(R.drawable.heart0);
+        mLikeView.addLikeImage(R.drawable.heart1);
+        mLikeView.addLikeImage(R.drawable.heart2);
+        mLikeView.addLikeImage(R.drawable.heart3);
+        mLikeView.addLikeImage(R.drawable.heart4);
+        mLikeView.addLikeImage(R.drawable.heart5);
+        mLikeView.addLikeImage(R.drawable.heart6);
+        mLikeView.addLikeImage(R.drawable.heart7);
+        mLikeView.addLikeImage(R.drawable.heart8);
     }
 
     @Override

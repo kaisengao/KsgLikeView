@@ -1,6 +1,10 @@
 package com.kaisengao.likeview.like;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -9,10 +13,8 @@ import android.widget.RelativeLayout;
 import com.kaisengao.likeview.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import androidx.annotation.DrawableRes;
-import androidx.core.content.ContextCompat;
 
 /**
  * @ClassName: KsgLikeView
@@ -22,7 +24,7 @@ import androidx.core.content.ContextCompat;
  */
 public class KsgLikeView extends RelativeLayout {
 
-    private List<Drawable> mLikeDrawables;
+    private List<Integer> mLikeDrawables;
 
     private LayoutParams mLayoutParams;
 
@@ -39,24 +41,33 @@ public class KsgLikeView extends RelativeLayout {
     public KsgLikeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        initParams();
+        @SuppressLint("CustomViewStyleable")
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.KsgLikeView);
+        // 默认图片 根据他获取飘心图的宽高 *重要
+        int defaultFavor = typedArray.getResourceId(R.styleable.KsgLikeView_ksg_default_image, -1);
+        // 进入动画时长
+        int enterDuration = typedArray.getInteger(R.styleable.KsgLikeView_ksg_enter_duration, 1500);
+        // 曲线动画时长
+        int curveDuration = typedArray.getInteger(R.styleable.KsgLikeView_ksg_curve_duration, 4500);
+
+        typedArray.recycle();
+
+        init(defaultFavor, enterDuration, curveDuration);
     }
 
-    private void initParams() {
+    private void init(int defaultFavor, int enterDuration, int curveDuration) {
         this.mLikeDrawables = new ArrayList<>();
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart0));
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart1));
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart2));
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart3));
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart4));
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart5));
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart6));
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart7));
-        this.mLikeDrawables.add(generateDrawable(R.drawable.heart8));
 
-        // 获取图片的宽高, 由于图片大小一致,故直接获取第一张图片的宽高
-        int picWidth = mLikeDrawables.get(0).getIntrinsicWidth();
-        int picHeight = mLikeDrawables.get(0).getIntrinsicHeight();
+        if (defaultFavor == -1) {
+            throw new IllegalStateException("please pass in the default image resource !");
+        }
+
+        // 获取图片资源
+        Drawable drawable = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), defaultFavor));
+
+        // 获取图片的宽高
+        int picWidth = drawable.getIntrinsicWidth();
+        int picHeight = drawable.getIntrinsicHeight();
 
         // 初始化布局参数
         this.mLayoutParams = new RelativeLayout.LayoutParams(picWidth, picHeight);
@@ -64,18 +75,20 @@ public class KsgLikeView extends RelativeLayout {
         this.mLayoutParams.addRule(ALIGN_PARENT_BOTTOM);
 
         // 初始化飘心动画路径
-        this.mPathAnimator = new KsgPathAnimator();
+        this.mPathAnimator = new KsgPathAnimator(enterDuration, curveDuration);
         this.mPathAnimator.setPic(picWidth, picHeight);
     }
 
-    /**
-     * 图片资源转Drawable
-     *
-     * @param resId R...icon...
-     * @return Drawable
-     */
-    private Drawable generateDrawable(@DrawableRes int resId) {
-        return ContextCompat.getDrawable(getContext(), resId);
+    public void addLikeImage(int resId) {
+        this.mLikeDrawables.add(resId);
+    }
+
+    public void addLikeImages(Integer[] resIds) {
+        this.mLikeDrawables.addAll(Arrays.asList(resIds));
+    }
+
+    public void addLikeImages(List<Integer> resIds) {
+        this.mLikeDrawables.addAll(resIds);
     }
 
     @Override
@@ -95,12 +108,12 @@ public class KsgLikeView extends RelativeLayout {
      */
     public void addFavor() {
 
-        ImageView imageView = new ImageView(getContext());
+        ImageView favor = new ImageView(getContext());
 
         int position = Math.abs(mPathAnimator.mRandom.nextInt(mLikeDrawables.size()));
 
-        imageView.setImageDrawable(mLikeDrawables.get(position));
+        favor.setImageResource(mLikeDrawables.get(position));
 
-        this.mPathAnimator.start(imageView, this, mLayoutParams);
+        this.mPathAnimator.start(favor, this, mLayoutParams);
     }
 }

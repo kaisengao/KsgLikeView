@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- KsgLikeView-->
+    <declare-styleable name="KsgLikeView">
+        <!-- 默认favor图片-->
+        <attr name="ksg_default_image" format="reference"/>
+        <!-- 进入动画 时长-->
+        <attr name="ksg_enter_duration" format="integer"/>
+        <!--贝赛尔曲线动画 时长-->
+        <attr name="ksg_curve_duration" format="integer"/>
+
+    </declare-styleable>
+</resources>
