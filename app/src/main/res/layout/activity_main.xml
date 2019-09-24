@@ -12,6 +12,7 @@
         android:layout_width="75dp"
         android:layout_height="0dp"
         android:layout_marginTop="100dp"
+        app:ksg_default_image="@drawable/heart0"
         app:ksg_enter_duration="1500"
         app:ksg_curve_duration="4500"
         app:layout_constraintDimensionRatio="H,1:4"
