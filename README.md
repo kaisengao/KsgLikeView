@@ -13,7 +13,7 @@ allprojects {
 
 ``` gradle  
  dependencies {
-	implementation 'com.github.kaisengao:KsgLikeView:v1.0.1'
+	implementation 'com.github.kaisengao:KsgLikeView:1.0.1'
 }
 ```
 
