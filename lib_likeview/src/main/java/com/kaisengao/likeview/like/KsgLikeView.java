@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -23,6 +24,8 @@ import java.util.List;
  * @Description: 飘心View
  */
 public class KsgLikeView extends RelativeLayout {
+
+    private final String TAG = KsgLikeView.class.getName();
 
     private List<Integer> mLikeDrawables;
 
@@ -59,7 +62,10 @@ public class KsgLikeView extends RelativeLayout {
         this.mLikeDrawables = new ArrayList<>();
 
         if (defaultFavor == -1) {
-            throw new IllegalStateException("please pass in the default image resource !");
+
+            defaultFavor = R.drawable.default_favor;
+
+            Log.e(TAG, "please pass in the default image resource !");
         }
 
         // 获取图片资源
