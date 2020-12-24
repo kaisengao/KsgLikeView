@@ -1,0 +1,18 @@
+ext {
+
+    // Android开发版本配置
+    android = [
+            compileSdkVersion: 29,
+            buildToolsVersion: "30.0.2",
+            applicationId    : "com.life.crystal.pda",
+            minSdkVersion    : 21,
+            targetSdkVersion : 29,
+            versionCode      : 1,
+            versionName      : "1.0.0",
+    ]
+
+    // Androidx配置
+    constraint = '2.0.4'
+    recycler = '1.1.0'
+    appcompat = '1.2.0'
+}

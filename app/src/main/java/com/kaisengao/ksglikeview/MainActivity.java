@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.Button;
 
 import com.kaisengao.likeview.like.KsgLikeView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 /**
  * @ClassName: MainActivity
@@ -16,83 +16,69 @@ import androidx.appcompat.app.AppCompatActivity;
  * @CreateDate: 2019-09-17 14:23
  * @Description: 啦啦啦啦啦 德玛西亚
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private KsgLikeView mLikeView;
 
-    private Button mMore;
-
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        initView();
+        this.setContentView(R.layout.activity_main);
+        // InitView
+        this.initView();
     }
 
+    /**
+     * InitView
+     */
     private void initView() {
-
-        mLikeView = findViewById(R.id.live_view);
-
-        findViewById(R.id.live_view_single).setOnClickListener(this);
-
-        mMore = findViewById(R.id.live_view_more);
-        mMore.setOnClickListener(this);
-
-        mLikeView.addLikeImage(R.drawable.heart0);
-        mLikeView.addLikeImage(R.drawable.heart1);
-        mLikeView.addLikeImage(R.drawable.heart2);
-        mLikeView.addLikeImage(R.drawable.heart3);
-        mLikeView.addLikeImage(R.drawable.heart4);
-        mLikeView.addLikeImage(R.drawable.heart5);
-        mLikeView.addLikeImage(R.drawable.heart6);
-        mLikeView.addLikeImage(R.drawable.heart7);
-        mLikeView.addLikeImage(R.drawable.heart8);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.live_view_single:
-
+        this.mLikeView = findViewById(R.id.live_view);
+        AppCompatButton single = findViewById(R.id.single);
+        AppCompatButton multiple = findViewById(R.id.multiple);
+        // 添加资源文件
+        this.mLikeView.addLikeImages(
+                R.drawable.heart0, R.drawable.heart1, R.drawable.heart2,
+                R.drawable.heart3, R.drawable.heart4, R.drawable.heart5,
+                R.drawable.heart6, R.drawable.heart7, R.drawable.heart8);
+        // 单个发送
+        single.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 mLikeView.addFavor();
-
-                break;
-            case R.id.live_view_more:
-
-                boolean selected = mMore.isSelected();
-
+            }
+        });
+        // 多个发送
+        multiple.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean selected = view.isSelected();
                 if (selected) {
-                    mHandler.removeCallbacks(mRunnable);
+                    mHandler.removeCallbacks(mLikeRunnable);
                 } else {
-                    mHandler.postDelayed(mRunnable, 100);
+                    mHandler.postDelayed(mLikeRunnable, 100);
                 }
-
-                mMore.setSelected(!selected);
-
-                break;
-            default:
-                break;
-        }
+                view.setSelected(!selected);
+            }
+        });
     }
 
-    private Runnable mRunnable = new Runnable() {
+    /**
+     * LikeRunnable
+     */
+    private final Runnable mLikeRunnable = new Runnable() {
         @Override
         public void run() {
-
+            // 添加 发送
             mLikeView.addFavor();
-
-            mHandler.postDelayed(mRunnable, 100);
+            mHandler.postDelayed(mLikeRunnable, 100);
         }
     };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacks(mRunnable);
+        this.mHandler.removeCallbacks(mLikeRunnable);
     }
-
-
 }

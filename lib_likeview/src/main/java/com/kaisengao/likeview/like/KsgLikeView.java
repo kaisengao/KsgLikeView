@@ -1,15 +1,17 @@
 package com.kaisengao.likeview.like;
 
-import android.annotation.SuppressLint;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 
 import com.kaisengao.likeview.R;
 
@@ -17,109 +19,179 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 /**
  * @ClassName: KsgLikeView
  * @Author: KaiSenGao
  * @CreateDate: 2019-09-17 14:23
  * @Description: 飘心View
  */
-public class KsgLikeView extends RelativeLayout {
+public class KsgLikeView extends AnimationLayout {
 
     private final String TAG = KsgLikeView.class.getName();
 
-    private List<Integer> mLikeDrawables;
+    private int mEnterDuration;
 
-    private LayoutParams mLayoutParams;
+    private int mCurveDuration;
 
-    private KsgPathAnimator mPathAnimator;
+    private List<Integer> mLikeRes;
 
     public KsgLikeView(Context context) {
         this(context, null);
     }
 
     public KsgLikeView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public KsgLikeView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-
-        @SuppressLint("CustomViewStyleable")
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.KsgLikeView);
-        // 默认图片 根据他获取飘心图的宽高 *重要
-        int defaultFavor = typedArray.getResourceId(R.styleable.KsgLikeView_ksg_default_image, -1);
-        // 进入动画时长
-        int enterDuration = typedArray.getInteger(R.styleable.KsgLikeView_ksg_enter_duration, 1500);
-        // 曲线动画时长
-        int curveDuration = typedArray.getInteger(R.styleable.KsgLikeView_ksg_curve_duration, 4500);
-
-        typedArray.recycle();
-
-        init(defaultFavor, enterDuration, curveDuration);
-    }
-
-    private void init(int defaultFavor, int enterDuration, int curveDuration) {
-        this.mLikeDrawables = new ArrayList<>();
-
-        if (defaultFavor == -1) {
-
-            defaultFavor = R.drawable.default_favor;
-
-            Log.e(TAG, "please pass in the default image resource !");
-        }
-
-        // 获取图片资源
-        Drawable drawable = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), defaultFavor));
-
-        // 获取图片的宽高
-        int picWidth = drawable.getIntrinsicWidth();
-        int picHeight = drawable.getIntrinsicHeight();
-
-        // 初始化布局参数
-        this.mLayoutParams = new RelativeLayout.LayoutParams(picWidth, picHeight);
-        this.mLayoutParams.addRule(CENTER_HORIZONTAL);
-        this.mLayoutParams.addRule(ALIGN_PARENT_BOTTOM);
-
-        // 初始化飘心动画路径
-        this.mPathAnimator = new KsgPathAnimator(enterDuration, curveDuration);
-        this.mPathAnimator.setPic(picWidth, picHeight);
-    }
-
-    public void addLikeImage(int resId) {
-        this.mLikeDrawables.add(resId);
-    }
-
-    public void addLikeImages(Integer[] resIds) {
-        this.mLikeDrawables.addAll(Arrays.asList(resIds));
-    }
-
-    public void addLikeImages(List<Integer> resIds) {
-        this.mLikeDrawables.addAll(resIds);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        this.mPathAnimator.setView(getWidth(), getHeight());
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        this.mPathAnimator.setView(getWidth(), getHeight());
+        super(context, attrs);
+        // Init TypedArray
+        this.initTypedArray(attrs);
     }
 
     /**
-     * 添加一个 飘心
+     * Init
      */
+    @Override
+    protected void init() {
+        super.init();
+        this.mLikeRes = new ArrayList<>();
+    }
+
+    /**
+     * Init TypedArray
+     */
+    private void initTypedArray(AttributeSet attrs) {
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.KsgLikeView);
+        // 进入动画时长
+        this.mEnterDuration = typedArray.getInteger(R.styleable.KsgLikeView_ksg_enter_duration, 1500);
+        // 路径动画时长
+        this.mCurveDuration = typedArray.getInteger(R.styleable.KsgLikeView_ksg_curve_duration, 4500);
+        // 回收
+        typedArray.recycle();
+    }
+
+    /**
+     * 添加 资源文件
+     *
+     * @param resId resId
+     */
+    @Override
+    public void addLikeImage(int resId) {
+        this.addLikeImages(resId);
+    }
+
+    /**
+     * 添加 资源文件组
+     *
+     * @param resIds resIds
+     */
+    @Override
+    public void addLikeImages(Integer... resIds) {
+        this.addLikeImages(Arrays.asList(resIds));
+    }
+
+    /**
+     * 添加 资源文件列表
+     *
+     * @param resIds resIds
+     */
+    @Override
+    public void addLikeImages(List<Integer> resIds) {
+        this.mLikeRes.addAll(resIds);
+    }
+
+    /**
+     * 添加 发送
+     */
+    @Override
     public void addFavor() {
+        // 非空验证
+        if (mLikeRes.isEmpty()) {
+            Log.e(TAG, "请添加资源文件！");
+            return;
+        }
+        // 随机获取一个资源
+        int favorRes = Math.abs(mLikeRes.get(mRandom.nextInt(mLikeRes.size())));
+        // 生成 配置参数
+        LayoutParams layoutParams = createLayoutParams(favorRes);
+        // 创建一个资源View
+        AppCompatImageView favorView = new AppCompatImageView(getContext());
+        favorView.setImageResource(favorRes);
+        // 开始执行动画
+        this.start(favorView, this, layoutParams);
+    }
 
-        ImageView favor = new ImageView(getContext());
+    /**
+     * 生成 配置参数
+     */
+    private LayoutParams createLayoutParams(int crystalLeaf) {
+        // 获取图片信息
+        this.getPictureInfo(crystalLeaf);
+        // 初始化布局参数
+        return new LayoutParams((int) mPicWidth, (int) mPicHeight, Gravity.BOTTOM | Gravity.CENTER);
+    }
 
-        int position = Math.abs(mPathAnimator.mRandom.nextInt(mLikeDrawables.size()));
+    /**
+     * 开始执行动画
+     *
+     * @param child        child
+     * @param parent       parent
+     * @param layoutParams layoutParams
+     */
+    private void start(View child, ViewGroup parent, LayoutParams layoutParams) {
+        // 设置进入动画
+        AnimatorSet enterAnimator = generateEnterAnimation(child);
+        // 设置路径动画
+        ValueAnimator curveAnimator = generateCurveAnimation(child);
+        // 执行动画集合
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(curveAnimator, enterAnimator);
+        animatorSet.addListener(new AnimationEndListener(child, parent, animatorSet));
+        animatorSet.start();
+        // add父布局
+        parent.addView(child, layoutParams);
+    }
 
-        favor.setImageResource(mLikeDrawables.get(position));
+    /**
+     * 进入动画
+     *
+     * @return 动画集合
+     */
+    private AnimatorSet generateEnterAnimation(View child) {
+        AnimatorSet enterAnimation = new AnimatorSet();
+        enterAnimation.playTogether(
+                ObjectAnimator.ofFloat(child, View.ALPHA, 0.2f, 1f),
+                ObjectAnimator.ofFloat(child, View.SCALE_X, 0.2f, 1f),
+                ObjectAnimator.ofFloat(child, View.SCALE_Y, 0.2f, 1f));
+        // 加一些动画差值器
+        enterAnimation.setInterpolator(new LinearInterpolator());
+        return enterAnimation.setDuration(mEnterDuration);
+    }
 
-        this.mPathAnimator.start(favor, this, mLayoutParams);
+    /**
+     * 贝赛尔曲线动画
+     *
+     * @return 动画集合
+     */
+    private ValueAnimator generateCurveAnimation(View child) {
+        // 起点 坐标
+        PointF pointStart = new PointF((mViewWidth - mPicWidth) / 2, mViewHeight - mPicHeight);
+        // 终点 坐标
+        PointF pointEnd = new PointF(((mViewWidth - mPicWidth) / 2) + ((mRandom.nextBoolean() ? 1 : -1) * mRandom.nextInt(100)), 0);
+        // 属性动画
+        PointF pointF1 = getTogglePoint(1);
+        PointF pointF2 = getTogglePoint(2);
+        ValueAnimator curveAnimator = ValueAnimator.ofObject(mEvaluatorRecord.getCurrentPath(pointF1, pointF2), pointStart, pointEnd);
+        curveAnimator.addUpdateListener(new CurveUpdateLister(child));
+        curveAnimator.setInterpolator(new LinearInterpolator());
+        return curveAnimator.setDuration(mCurveDuration);
+    }
+
+    private PointF getTogglePoint(int scale) {
+        PointF pointf = new PointF();
+        // 减去100 是为了控制 x轴活动范围
+        pointf.x = mRandom.nextInt((mViewWidth - 100));
+        // 再Y轴上 为了确保第二个控制点 在第一个点之上,我把Y分成了上下两半
+        pointf.y = (float) mRandom.nextInt((mViewHeight - 100)) / scale;
+        return pointf;
     }
 }
