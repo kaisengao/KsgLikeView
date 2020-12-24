@@ -1,6 +1,8 @@
 # KsgLikeView
 Android UI动画 仿直播点赞飘心动画效果
 
+### 代码改动较大 请谨慎更新~
+
 ### 添加依赖
 ``` gradle
 allprojects {
