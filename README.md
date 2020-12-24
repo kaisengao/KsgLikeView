@@ -13,7 +13,7 @@ allprojects {
 
 ``` gradle  
  dependencies {
-	implementation 'com.github.kaisengao:KsgLikeView:1.0.1'
+	implementation 'com.github.kaisengao:KsgLikeView:1.2'
 }
 ```
 
@@ -28,7 +28,6 @@ allprojects {
      android:layout_width="75dp"
      android:layout_height="0dp"
      android:layout_marginTop="100dp"
-     app:ksg_default_image="@drawable/heart0"
      app:ksg_enter_duration="1500"
      app:ksg_curve_duration="4500"
      app:layout_constraintDimensionRatio="H,1:4"
@@ -44,8 +43,10 @@ mLikeView.addLikeImage(R.drawable.heart0);
 ```
 数组形式
 ```java
-Integer[] images = {R.drawable.heart1, R.drawable.heart2};
-mLikeView.addLikeImages(images);
+mLikeView.addLikeImages(
+    R.drawable.heart0, R.drawable.heart1, R.drawable.heart2,
+    R.drawable.heart3, R.drawable.heart4, R.drawable.heart5,
+    R.drawable.heart6, R.drawable.heart7, R.drawable.heart8);
 ```
 集合形式
 ```java
@@ -62,10 +63,9 @@ mLikeView.addFavor();
 ### Xml attributes
  attribute  | description 
  ------------- | -------------
- ksg_default_image | 默认favor图片（重要，因为是获取图片宽高的关键）
- ksg_enter_duration | 出场动画 时长
- ksg_curve_duration | 贝赛尔曲线动画 时长
+ ksg_enter_duration | 进入动画 时长
+ ksg_curve_duration | 路径动画 时长
  
- 
+
 :kissing_heart:
  
