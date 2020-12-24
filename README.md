@@ -1,6 +1,8 @@
 # KsgLikeView
 Android UI动画 仿直播点赞飘心动画效果
 
+[![](https://jitpack.io/v/kaisengao/KsgLikeView.svg)](https://jitpack.io/#kaisengao/KsgLikeView)
+
 ### 代码改动较大 请谨慎更新~
 
 ### 添加依赖
@@ -15,7 +17,7 @@ allprojects {
 
 ``` gradle  
  dependencies {
-	implementation 'com.github.kaisengao:KsgLikeView:1.2'
+	implementation 'com.github.kaisengao:KsgLikeView:1.2.1'
 }
 ```
 
