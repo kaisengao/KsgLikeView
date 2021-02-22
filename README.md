@@ -22,7 +22,7 @@ allprojects {
 ```
 
 ### 效果Image
-<img src="https://github.com/kaisengao/KsgLikeView/blob/master/images/45409B7666542572C7EF027817D2F2F4.jpg" width="200" height="370"/> <img src="https://github.com/kaisengao/KsgLikeView/blob/master/images/E608FBEAE81F351609EB9C877D6CC4B4.2019-09-24%2013_09_59.gif" width="200" height="370"/>
+<img src="http://chuantu.xyz/t6/741/1613975945x1700338641.jpg" width="200" height="370"/> <img src="http://chuantu.xyz/t6/741/1613975912x1033348314.gif" width="200" height="370"/>
 
 
 ### Create View
