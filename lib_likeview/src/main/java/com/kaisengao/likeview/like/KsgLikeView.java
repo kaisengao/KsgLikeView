@@ -7,10 +7,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 
 import com.kaisengao.likeview.R;
@@ -29,13 +27,11 @@ import androidx.appcompat.widget.AppCompatImageView;
  */
 public class KsgLikeView extends AnimationLayout {
 
-    private final String TAG = KsgLikeView.class.getName();
-
     private int mEnterDuration;
 
     private int mCurveDuration;
 
-    private List<Integer> mLikeRes;
+    private final List<Integer> mLikeRes;
 
     public KsgLikeView(Context context) {
         this(context, null);
@@ -45,14 +41,7 @@ public class KsgLikeView extends AnimationLayout {
         super(context, attrs);
         // Init TypedArray
         this.initTypedArray(attrs);
-    }
-
-    /**
-     * Init
-     */
-    @Override
-    protected void init() {
-        super.init();
+        // Create Resource List
         this.mLikeRes = new ArrayList<>();
     }
 
@@ -106,8 +95,7 @@ public class KsgLikeView extends AnimationLayout {
     public void addFavor() {
         // 非空验证
         if (mLikeRes.isEmpty()) {
-            Log.e(TAG, "请添加资源文件！");
-            return;
+            throw new NullPointerException("Missing resource file！");
         }
         // 随机获取一个资源
         int favorRes = Math.abs(mLikeRes.get(mRandom.nextInt(mLikeRes.size())));
@@ -117,7 +105,7 @@ public class KsgLikeView extends AnimationLayout {
         AppCompatImageView favorView = new AppCompatImageView(getContext());
         favorView.setImageResource(favorRes);
         // 开始执行动画
-        this.start(favorView, this, layoutParams);
+        this.start(favorView, layoutParams);
     }
 
     /**
@@ -134,10 +122,9 @@ public class KsgLikeView extends AnimationLayout {
      * 开始执行动画
      *
      * @param child        child
-     * @param parent       parent
      * @param layoutParams layoutParams
      */
-    private void start(View child, ViewGroup parent, LayoutParams layoutParams) {
+    private void start(View child, LayoutParams layoutParams) {
         // 设置进入动画
         AnimatorSet enterAnimator = generateEnterAnimation(child);
         // 设置路径动画
@@ -145,10 +132,10 @@ public class KsgLikeView extends AnimationLayout {
         // 执行动画集合
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(curveAnimator, enterAnimator);
-        animatorSet.addListener(new AnimationEndListener(child, parent, animatorSet));
+        animatorSet.addListener(new AnimationEndListener(child, animatorSet));
         animatorSet.start();
         // add父布局
-        parent.addView(child, layoutParams);
+        super.addView(child, layoutParams);
     }
 
     /**

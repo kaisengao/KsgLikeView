@@ -1,44 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
-    <com.kaisengao.likeview.like.KsgLikeView
-        android:id="@+id/live_view"
-        android:layout_width="75dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="100dp"
-        app:ksg_curve_duration="4500"
-        app:ksg_enter_duration="1500"
-        app:layout_constraintDimensionRatio="H,1:4"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/single"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="发送一条"
+        android:onClick="intentNormalMode"
+        android:text="普通模式"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="@id/live_view"
-        app:layout_constraintRight_toRightOf="@id/live_view"
-        app:layout_constraintTop_toBottomOf="@id/live_view" />
+        android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/multiple"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="发送一堆"
+        android:onClick="intentViewpager2Mode"
+        android:text="Viewpager2模式"
+        android:textAllCaps="false"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="@id/live_view"
-        app:layout_constraintRight_toRightOf="@id/live_view"
-        app:layout_constraintTop_toBottomOf="@id/single" />
+        android:textSize="14sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tooæls="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/item_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        tooæls:text="我是短视频" />
+
+    <com.kaisengao.likeview.like.KsgLikeView
+        android:id="@+id/item_like"
+        android:layout_width="75dp"
+        android:layout_height="300dp"
+        android:layout_above="@id/item_praise"
+        android:layout_alignStart="@id/item_praise"
+        android:layout_alignEnd="@id/item_praise"
+        app:ksg_curve_duration="4500"
+        app:ksg_enter_duration="1500" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/item_praise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="点赞"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/item_notify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="刷新Item"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+</RelativeLayout>

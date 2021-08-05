@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.kaisengao.likeview.like.evaluator.CurveEvaluatorRecord;
@@ -46,6 +45,11 @@ public abstract class AnimationLayout extends FrameLayout implements IAnimationL
 
     public AnimationLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
         // 初始化
         this.init();
     }
@@ -114,13 +118,13 @@ public abstract class AnimationLayout extends FrameLayout implements IAnimationL
      * 动画结束监听器,用于释放无用的资源
      */
     protected class AnimationEndListener extends AnimatorListenerAdapter {
-        private final View mChild;
-        private final ViewGroup mParent;
+
+        private View mChild;
+
         private final AnimatorSet mAnimatorSet;
 
-        protected AnimationEndListener(View child, ViewGroup parent, AnimatorSet animatorSet) {
+        protected AnimationEndListener(View child, AnimatorSet animatorSet) {
             this.mChild = child;
-            this.mParent = parent;
             this.mAnimatorSet = animatorSet;
             // 缓存
             mAnimatorSets.add(mAnimatorSet);
@@ -130,9 +134,11 @@ public abstract class AnimationLayout extends FrameLayout implements IAnimationL
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
             // 动画结束 移除View
-            this.mParent.removeView(mChild);
+            removeView(mChild);
             // 从集合中移除
             mAnimatorSets.remove(mAnimatorSet);
+            // View置空
+            this.mChild = null;
         }
     }
 
@@ -154,6 +160,8 @@ public abstract class AnimationLayout extends FrameLayout implements IAnimationL
             // 取消动画
             animatorSet.cancel();
         }
+        // 移除所有View
+        this.removeAllViews();
         // 释放集合资源
         this.mAnimatorSets.clear();
         this.mEvaluatorRecord.destroy();
