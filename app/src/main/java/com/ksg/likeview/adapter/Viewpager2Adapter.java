@@ -1,12 +1,12 @@
-package com.kaisengao.ksglikeview.adapter;
+package com.ksg.likeview.adapter;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kaisengao.ksglikeview.R;
 import com.kaisengao.likeview.like.KsgLikeView;
+import com.ksg.likeview.R;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
  * @Description: Viewpager2 列表模式 Adapter
  */
 public class Viewpager2Adapter extends RecyclerView.Adapter<Viewpager2Adapter.ViewHolder> {
+
+
 
     @NonNull
     @Override

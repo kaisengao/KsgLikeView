@@ -4,7 +4,7 @@ ext {
     android = [
             compileSdkVersion: 29,
             buildToolsVersion: "30.0.2",
-            applicationId    : "com.life.crystal.pda",
+            applicationId    : "com.ksg.likeview",
             minSdkVersion    : 19,
             targetSdkVersion : 29,
             versionCode      : 1,

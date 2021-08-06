@@ -1,4 +1,4 @@
-package com.kaisengao.ksglikeview;
+package com.ksg.likeview;
 
 import android.os.Bundle;
 import android.os.Handler;

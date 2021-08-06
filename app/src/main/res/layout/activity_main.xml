@@ -11,8 +11,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="intentNormalMode"
-        android:text="普通模式"
+        android:onClick="intentNormal"
+        android:text="普通"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
@@ -20,8 +20,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:onClick="intentViewpager2Mode"
-        android:text="Viewpager2模式"
+        android:onClick="intentRecycler"
+        android:text="RecyclerView"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="intentViewpager2"
+        android:text="Viewpager2"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
         android:textSize="14sp" />

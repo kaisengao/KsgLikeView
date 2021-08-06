@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kaisengao.ksglikeview">
+    package="com.ksg.likeview">
 
     <application
         android:allowBackup="true"
@@ -19,7 +19,7 @@
         </activity>
 
         <activity android:name=".NormalActivity" />
-        <activity android:name=".ListActivity" />
+        <activity android:name=".RecyclerActivity" />
         <activity android:name=".Viewpager2Activity" />
 
     </application>

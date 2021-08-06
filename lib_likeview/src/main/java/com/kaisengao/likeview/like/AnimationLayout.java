@@ -59,9 +59,13 @@ public abstract class AnimationLayout extends FrameLayout implements IAnimationL
      */
     protected void init() {
         // 动画集合
-        this.mAnimatorSets = new ArrayList<>();
+        if (mAnimatorSets == null) {
+            this.mAnimatorSets = new ArrayList<>();
+        }
         // 贝塞尔曲线缓存类
-        this.mEvaluatorRecord = new CurveEvaluatorRecord();
+        if (mEvaluatorRecord == null) {
+            this.mEvaluatorRecord = new CurveEvaluatorRecord();
+        }
     }
 
     /**
@@ -133,11 +137,11 @@ public abstract class AnimationLayout extends FrameLayout implements IAnimationL
         @Override
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
-            // 动画结束 移除View
+            // 移除View
             removeView(mChild);
-            // 从集合中移除
+            // 移除缓存
             mAnimatorSets.remove(mAnimatorSet);
-            // View置空
+            // 释放View
             this.mChild = null;
         }
     }
@@ -153,17 +157,22 @@ public abstract class AnimationLayout extends FrameLayout implements IAnimationL
      * 销毁资源
      */
     public void destroy() {
-        // 取消动画 释放资源
-        for (AnimatorSet animatorSet : mAnimatorSets) {
-            // 初始化回调方法
-            animatorSet.getListeners().clear();
-            // 取消动画
-            animatorSet.cancel();
-        }
         // 移除所有View
         this.removeAllViews();
-        // 释放集合资源
-        this.mAnimatorSets.clear();
-        this.mEvaluatorRecord.destroy();
+        // 取消动画 释放资源
+        if (mAnimatorSets != null) {
+            // 取消动画
+            for (AnimatorSet animatorSet : mAnimatorSets) {
+                animatorSet.getListeners().clear();
+                animatorSet.cancel();
+            }
+            this.mAnimatorSets.clear();
+            this.mAnimatorSets = null;
+        }
+        // 清空缓存路径
+        if (mEvaluatorRecord != null) {
+            this.mEvaluatorRecord.destroy();
+            this.mEvaluatorRecord = null;
+        }
     }
 }

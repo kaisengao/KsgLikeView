@@ -1,8 +1,8 @@
-package com.kaisengao.ksglikeview;
+package com.ksg.likeview;
 
 import android.os.Bundle;
 
-import com.kaisengao.ksglikeview.adapter.Viewpager2Adapter;
+import com.ksg.likeview.adapter.Viewpager2Adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;

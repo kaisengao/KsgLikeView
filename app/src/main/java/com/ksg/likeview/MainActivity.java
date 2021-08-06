@@ -1,4 +1,4 @@
-package com.kaisengao.ksglikeview;
+package com.ksg.likeview;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,11 +20,15 @@ public class MainActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_main);
     }
 
-    public void intentNormalMode(View view) {
+    public void intentNormal(View view) {
         this.startActivity(new Intent(this, NormalActivity.class));
     }
 
-    public void intentViewpager2Mode(View view) {
+    public void intentRecycler(View view) {
+        this.startActivity(new Intent(this, RecyclerActivity.class));
+    }
+
+    public void intentViewpager2(View view) {
         this.startActivity(new Intent(this, Viewpager2Activity.class));
     }
 }

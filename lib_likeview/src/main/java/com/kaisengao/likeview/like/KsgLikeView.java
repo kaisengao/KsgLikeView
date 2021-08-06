@@ -146,9 +146,9 @@ public class KsgLikeView extends AnimationLayout {
     private AnimatorSet generateEnterAnimation(View child) {
         AnimatorSet enterAnimation = new AnimatorSet();
         enterAnimation.playTogether(
-                ObjectAnimator.ofFloat(child, View.ALPHA, 0.2f, 1f),
-                ObjectAnimator.ofFloat(child, View.SCALE_X, 0.2f, 1f),
-                ObjectAnimator.ofFloat(child, View.SCALE_Y, 0.2f, 1f));
+                ObjectAnimator.ofFloat(child, ALPHA, 0.2f, 1f),
+                ObjectAnimator.ofFloat(child, SCALE_X, 0.2f, 1f),
+                ObjectAnimator.ofFloat(child, SCALE_Y, 0.2f, 1f));
         // 加一些动画差值器
         enterAnimation.setInterpolator(new LinearInterpolator());
         return enterAnimation.setDuration(mEnterDuration);
