@@ -20,7 +20,9 @@ allprojects {
 ```
 
 ### 效果图
-稍等 正在制作中...
+<img src="https://github.com/kaisengao/KsgLikeView/blob/master/images/like_main.jpg" width="35%">       <img src="https://github.com/kaisengao/KsgLikeView/blob/master/images/like_normal.gif" width="35%">
+
+<img src="https://github.com/kaisengao/KsgLikeView/blob/master/images/like_list.gif" width="35%">       <img src="https://github.com/kaisengao/KsgLikeView/blob/master/images/like_viewpager.gif" width="35%">
 
 
 ### 基本使用
